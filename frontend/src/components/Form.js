@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { FormControl, Button, Box, Flex, Input, Text } from "@chakra-ui/react";
+import {
+  FormControl,
+  Button,
+  Box,
+  Flex,
+  Input,
+  Text,
+} from "@chakra-ui/react";
 
-const URL = "http://localhost:5000/";
+const URL = "http://localhost:5000/reviews/upload_reviews";
 
 function App() {
   const [file, setFile] = useState();
@@ -47,7 +54,9 @@ function App() {
             >
               Choose File
             </Button>
-            <Text mr="1rem">{file !== undefined ? file.name : null}</Text>
+            <Text mr="1rem">
+              {file !== undefined ? file.name : null}
+            </Text>
             <Button type="submit">Upload</Button>
           </Flex>
         </FormControl>
