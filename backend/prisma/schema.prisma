@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model entities {
+  id             BigInt       @id @default(autoincrement())
+  score          Decimal      @db.Decimal
+  magnitude      Decimal      @db.Decimal
+  entity         entity_type
+  name           String       @db.VarChar(255)
+  string         string_type
+  sentimental_id BigInt
+  created_at     DateTime?    @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  updated_at     DateTime?    @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  sentimental    sentimentals @relation(fields: [sentimental_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model reviews {
+  id             BigInt       @id @default(autoincrement())
+  rating         Decimal      @db.Decimal
+  content        String
+  customer_id    BigInt
+  product_id     BigInt
+  sentimental_id BigInt
+  created_at     DateTime?    @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  updated_at     DateTime?    @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  customer       customers    @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product        products     @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sentimental    sentimentals @relation(fields: [sentimental_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model customers {
+  id         BigInt    @id @default(autoincrement())
+  name       String    @db.VarChar(255)
+  created_at DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  updated_at DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  reviews    reviews[]
+}
+
+model products {
+  id           BigInt    @id @default(autoincrement())
+  name         String    @db.VarChar(255)
+  slug         String    @db.VarChar(255)
+  product_type String    @db.VarChar(255)
+  location     String    @db.VarChar(255)
+  created_at   DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  updated_at   DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  reviews      reviews[]
+}
+
+model sentimentals {
+  id         BigInt      @id @default(autoincrement())
+  score      Decimal     @db.Decimal
+  magnitude  Decimal     @db.Decimal
+  string     string_type
+  created_at DateTime?   @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  updated_at DateTime?   @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  entities   entities[]
+  reviews    reviews[]
+}
+
+enum entity_type {
+  person
+  location
+  org
+  event
+  consumer_good
+  price
+}
+
+enum string_type {
+  clearly_positive @map("clearly positive")
+  clearly_negative @map("clearly negative")
+  neutral
+  mixed
+}
