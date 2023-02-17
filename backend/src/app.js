@@ -15,7 +15,13 @@ app.use(express.json({ limit: "40mb" }));
 app.use(cors());
 
 app.post("/", (req, res) => {
-  const jsonData = req.body.data;
+  const reviews = JSON.parse(req.body.data);
+  reviews.forEach((review) => {
+    pool.query("insert into reviews(content, rating) values($1, $2)", [
+      review["Review Content"],
+      review.Rating,
+    ]);
+  });
   res.send({ message: "File uploaded successfully" });
 });
 

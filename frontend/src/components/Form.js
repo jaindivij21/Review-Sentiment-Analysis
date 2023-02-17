@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
-  Button,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 
 const URL = "http://localhost:5000/";
 
@@ -20,13 +13,12 @@ function App() {
     setFile(e.target.files[0]);
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
 
     if (file) {
       fileReader.onload = function (event) {
         const jsonData = event.target.result;
-        console.log(file);
         axios.post(URL, { data: jsonData });
       };
 
@@ -41,7 +33,6 @@ function App() {
           <FormLabel>Upload File</FormLabel>
           <Input type="file" accept=".json" onChange={handleOnChange} />
           <Button type="submit">Upload</Button>
-          {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
         </FormControl>
       </form>
     </div>
