@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
+import { FormControl, Button, Box, Flex, Input, Text } from "@chakra-ui/react";
 
 const URL = "http://localhost:5000/";
 
 function App() {
   const [file, setFile] = useState();
+  let inputRef;
 
   const fileReader = new FileReader();
 
   const handleOnChange = (e) => {
-    setFile(e.target.files[0]);
+    setFile(inputRef.files[0]);
+    console.log(inputRef.files[0]);
   };
 
   const handleOnSubmit = async (e) => {
@@ -27,15 +29,30 @@ function App() {
   };
 
   return (
-    <div>
+    <Box>
       <form onSubmit={handleOnSubmit}>
-        <FormControl width="50%">
-          <FormLabel>Upload File</FormLabel>
-          <Input type="file" accept=".json" onChange={handleOnChange} />
-          <Button type="submit">Upload</Button>
+        <FormControl>
+          <Flex alignItems="center ">
+            <Input
+              onChange={handleOnChange}
+              accept=".json"
+              type="file"
+              hidden={true}
+              ref={(refParam) => (inputRef = refParam)}
+            />
+            <Button
+              onClick={() => inputRef.click()}
+              colorScheme="orange"
+              mr="1rem"
+            >
+              Choose File
+            </Button>
+            <Text mr="1rem">{file !== undefined ? file.name : null}</Text>
+            <Button type="submit">Upload</Button>
+          </Flex>
         </FormControl>
       </form>
-    </div>
+    </Box>
   );
 }
 
