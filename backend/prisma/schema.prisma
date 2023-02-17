@@ -8,16 +8,16 @@ datasource db {
 }
 
 model entities {
-  id             BigInt       @id @default(autoincrement())
-  score          Decimal      @db.Decimal
-  magnitude      Decimal      @db.Decimal
+  id             BigInt         @id @default(autoincrement())
+  score          Decimal        @db.Decimal
+  magnitude      Decimal        @db.Decimal
   entity         entity_type
-  name           String       @db.VarChar(255)
-  string         string_type
+  name           String         @db.VarChar(255)
+  sentiment      sentiment_type
   sentimental_id BigInt
-  created_at     DateTime?    @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
-  updated_at     DateTime?    @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
-  sentimental    sentimentals @relation(fields: [sentimental_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  created_at     DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  updated_at     DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  sentimental    sentimentals   @relation(fields: [sentimental_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model reviews {
@@ -27,8 +27,8 @@ model reviews {
   customer_id    BigInt
   product_id     BigInt
   sentimental_id BigInt
-  created_at     DateTime?    @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
-  updated_at     DateTime?    @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  created_at     DateTime?    @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  updated_at     DateTime?    @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
   customer       customers    @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   product        products     @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   sentimental    sentimentals @relation(fields: [sentimental_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -37,8 +37,8 @@ model reviews {
 model customers {
   id         BigInt    @id @default(autoincrement())
   name       String    @db.VarChar(255)
-  created_at DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
-  updated_at DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  created_at DateTime? @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  updated_at DateTime? @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
   reviews    reviews[]
 }
 
@@ -48,18 +48,18 @@ model products {
   slug         String    @db.VarChar(255)
   product_type String    @db.VarChar(255)
   location     String    @db.VarChar(255)
-  created_at   DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
-  updated_at   DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  created_at   DateTime? @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  updated_at   DateTime? @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
   reviews      reviews[]
 }
 
 model sentimentals {
-  id         BigInt      @id @default(autoincrement())
-  score      Decimal     @db.Decimal
-  magnitude  Decimal     @db.Decimal
-  string     string_type
-  created_at DateTime?   @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
-  updated_at DateTime?   @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  id         BigInt         @id @default(autoincrement())
+  score      Decimal        @db.Decimal
+  magnitude  Decimal        @db.Decimal
+  sentiment  sentiment_type
+  created_at DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  updated_at DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
   entities   entities[]
   reviews    reviews[]
 }
@@ -73,9 +73,11 @@ enum entity_type {
   price
 }
 
-enum string_type {
+enum sentiment_type {
   clearly_positive @map("clearly positive")
   clearly_negative @map("clearly negative")
   neutral
   mixed
+  positive
+  negitive
 }
