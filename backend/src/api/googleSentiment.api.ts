@@ -9,13 +9,21 @@ class GoogleSentiment {
     review: string
   ): Promise<IReviewSentiment> {
     const response = await axios.post(
-      `${this.googleEndpoint}${"annotateText"}`,
+      `${this.googleEndpoint}${"annotateText"}?key=${
+        process.env.GOOGLE_API_KEY
+      }`,
       {
         document: {
           content: review,
           type: "PLAIN_TEXT",
         },
-        encodingType: "UTF8",
+        features: {
+          extractSyntax: false,
+          extractEntities: false,
+          extractDocumentSentiment: true,
+          extractEntitySentiment: true,
+          classifyText: false,
+        },
       }
     );
     return response.data;

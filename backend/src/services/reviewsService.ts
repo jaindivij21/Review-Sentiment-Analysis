@@ -20,11 +20,17 @@ class ReviewsService {
   async addReview(input: ReviewInput) {
     const reviewData = await this.getReviewData(input);
 
-    const reviews = await this.prisma.reviews.createMany({
-      data: reviewData,
-    });
+    const reviewIds = [];
 
-    return reviews;
+    for (const data of reviewData) {
+      const review = await this.prisma.reviews.create({
+        data,
+        select: { id: true },
+      });
+      reviewIds.push(review.id);
+    }
+
+    return reviewIds;
   }
 
   private async getReviewData(input: ReviewInput) {

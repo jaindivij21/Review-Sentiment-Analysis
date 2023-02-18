@@ -1,7 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
 // Interfaces
-import { IEntitySentiment } from "../interface/review.interface";
+import {
+  IEntitySentiment,
+  ISentenceSentiment,
+} from "../interface/review.interface";
 
 // Utils
 import googleSentiment from "../api/googleSentiment.api";
@@ -42,8 +45,21 @@ class SentimentalService {
             })
           ),
         },
+        sentences: {
+          create: this.getSentencesData(
+            response.sentences
+          ).map((sentence) => ({
+            content: sentence.text,
+            score: sentence.score,
+            magnitude: sentence.magnitude,
+            sentiment: sentence.sentiment,
+          })),
+        },
       },
-      include: { entities: true },
+      include: {
+        entities: true,
+        sentences: true,
+      },
     });
 
     return sentiment.id;
@@ -59,6 +75,21 @@ class SentimentalService {
       sentiment: getSentimentString(
         entity.sentiment.score,
         entity.sentiment.magnitude
+      ),
+    }));
+  }
+
+  // Private method to get the sentences data
+  private getSentencesData(
+    sentences: ISentenceSentiment[]
+  ) {
+    return sentences.map((sentence) => ({
+      text: sentence.text.content,
+      score: sentence.sentiment.score,
+      magnitude: sentence.sentiment.magnitude,
+      sentiment: getSentimentString(
+        sentence.sentiment.score,
+        sentence.sentiment.magnitude
       ),
     }));
   }
