@@ -19,10 +19,6 @@ export const reviewSchema = {
   },
 };
 
-const groupedReviewSchema = {};
-
-export const reviewsSchema = {
-  title: "Reviews",
-  type: "array",
-  items: groupedReviewSchema,
+export const reviewsAnalysisSchema = {
+  title: "Reviews Analysis",
 };

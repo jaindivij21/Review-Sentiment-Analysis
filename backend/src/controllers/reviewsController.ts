@@ -4,8 +4,8 @@ import bulkSerializer from "../serializers/bulkSerializer";
 import objectSerializer from "../serializers/objectSerializer";
 import {
   reviewIDSchema,
+  reviewsAnalysisSchema,
   reviewSchema,
-  reviewsSchema,
 } from "../serializers/reviewSchema";
 
 // Commands
@@ -90,5 +90,45 @@ export async function show(req: Request, res: Response) {
   res.json({
     message: "Review Fetched Successfully!",
     review: objectSerializer(review, reviewSchema),
+  });
+}
+
+// Action to get cumulative sentiment analysis of all reviews
+export async function reviewsAnalysis(
+  req: Request,
+  res: Response
+) {
+  const reviewIDs = req.body.ids;
+
+  const reviews = await prisma.reviews.findMany({
+    where: {
+      id: {
+        in: reviewIDs,
+      },
+    },
+    include: {
+      sentiments: {
+        include: {
+          entities: true,
+          sentences: true,
+        },
+      },
+    },
+  });
+
+  if (reviews.length === 0) {
+    res.send({ message: "No reviews found" });
+  }
+
+  const serializedReviews =
+    await reviewsService.getSerializedReviews(reviews);
+
+  console.log("seriaized", serializedReviews);
+  res.json({
+    message: "Reviews Analysis Fetched Successfully!",
+    reviews: bulkSerializer(
+      serializedReviews,
+      reviewsAnalysisSchema
+    ),
   });
 }

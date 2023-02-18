@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { getAvgRating } from "../helpers/review";
 
 // Utils
 import sentimentalService from "./sentimentalService";
@@ -31,6 +32,12 @@ class ReviewsService {
     }
 
     return reviewIds;
+  }
+
+  async getSerializedReviews(reviews: any[]) {
+    let serializedReviews: any = {};
+    serializedReviews["avg_rating"] = getAvgRating(reviews);
+    return serializedReviews;
   }
 
   private async mapReviewData(input: ReviewInput) {
