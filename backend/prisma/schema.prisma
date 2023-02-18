@@ -15,8 +15,8 @@ model entities {
   name         String         @db.VarChar(255)
   sentiment    sentiment_type
   sentiment_id BigInt
-  created_at   DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
-  updated_at   DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  created_at   DateTime?      @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  updated_at   DateTime?      @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
   sentiments   sentiments     @relation(fields: [sentiment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
@@ -27,8 +27,8 @@ model reviews {
   customer_id  BigInt
   product_id   BigInt
   sentiment_id BigInt
-  created_at   DateTime?  @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
-  updated_at   DateTime?  @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  created_at   DateTime?  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  updated_at   DateTime?  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
   customer     customers  @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   product      products   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   sentiments   sentiments @relation(fields: [sentiment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -37,8 +37,8 @@ model reviews {
 model customers {
   id         BigInt    @id @default(autoincrement())
   name       String    @db.VarChar(255)
-  created_at DateTime? @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
-  updated_at DateTime? @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  created_at DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  updated_at DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
   reviews    reviews[]
 }
 
@@ -48,8 +48,8 @@ model products {
   slug         String    @db.VarChar(255)
   product_type String    @db.VarChar(255)
   location     String    @db.VarChar(255)
-  created_at   DateTime? @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
-  updated_at   DateTime? @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  created_at   DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  updated_at   DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
   reviews      reviews[]
 }
 
@@ -58,8 +58,8 @@ model sentiments {
   score      Decimal        @db.Decimal
   magnitude  Decimal        @db.Decimal
   sentiment  sentiment_type
-  created_at DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
-  updated_at DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  created_at DateTime?      @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  updated_at DateTime?      @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
   entities   entities[]
   reviews    reviews[]
   sentences  sentences[]
