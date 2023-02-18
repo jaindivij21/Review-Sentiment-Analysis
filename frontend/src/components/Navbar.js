@@ -1,18 +1,14 @@
-import { Box, Text, Container, Flex, HStack } from "@chakra-ui/react";
+import { Box, Text, Flex, Button } from "@chakra-ui/react";
 
 export const Navbar = () => {
   return (
-    <Box as="section" pb={{ base: "12", md: "24" }}>
-      <Box bgColor="orange" as="nav" bg="bg-surface" boxShadow="sm">
-        <Container py={{ base: "4", lg: "5" }}>
-          <Flex justify="center" flex="1">
-            <HStack spacing="3">
-              <Text fontSize="3xl" color="white" variant="ghost">
-                Thrillo Review Sentimental System
-              </Text>
-            </HStack>
-          </Flex>
-        </Container>
+    <Box p="6" bgColor="orange" as="nav" bg="bg-surface" boxShadow="sm">
+      <Box>
+        <Flex justify="space-evenly" flex="1">
+          <Text fontSize="3xl" color="white" variant="ghost" fontWeight="600">
+            Thrillo Review Sentimental System
+          </Text>
+        </Flex>
       </Box>
     </Box>
   );

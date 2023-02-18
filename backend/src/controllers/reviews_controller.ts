@@ -15,7 +15,7 @@ export async function load_review_controller(req: Request, res: Response) {
 }
 
 export async function get_review_controller(_req: Request, res: Response) {
-  const users = await prisma.customer.findMany();
-  console.log(toJson(users));
+  const users = await prisma.customers.findFirst();
+  console.log(users);
   res.json({ message: toJson(users) });
 }

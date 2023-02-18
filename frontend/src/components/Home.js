@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 
 function Home() {
   return (
-    <Box>
+    <Box height="100vh">
       <Navbar />
       <Box m="1rem" display="flex" flexDirection="column" alignItems="center">
         <Text m="1rem" fontSize="xl" fontWeight="500">
