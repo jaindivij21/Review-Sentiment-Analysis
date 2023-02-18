@@ -9,7 +9,7 @@ class GoogleSentiment {
     review: string
   ): Promise<IReviewSentiment> {
     const response = await axios.post(
-      `this.googleEndpoint${"annotateText"}`,
+      `${this.googleEndpoint}${"annotateText"}`,
       {
         document: {
           content: review,
