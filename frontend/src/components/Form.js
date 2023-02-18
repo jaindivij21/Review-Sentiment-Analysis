@@ -7,12 +7,19 @@ import {
   Flex,
   Input,
   Text,
+  Textarea,
+  FormLabel,
 } from "@chakra-ui/react";
 
 const URL = "http://localhost:5000/reviews/upload_reviews";
 
 function App() {
   const [file, setFile] = useState();
+  const [customReview, setCustomReview] = useState({
+    content: "",
+    rating: null,
+  });
+
   let inputRef;
 
   const fileReader = new FileReader();
@@ -32,14 +39,17 @@ function App() {
       };
 
       fileReader.readAsText(file);
+    } else {
+      console.log(customReview);
+      axios.post(URL, { data: [customReview] });
     }
   };
 
   return (
-    <Box>
+    <Box w="100%">
       <form onSubmit={handleOnSubmit}>
         <FormControl>
-          <Flex alignItems="center ">
+          <Flex w="100%" direction="column" alignItems="center ">
             <Input
               onChange={handleOnChange}
               accept=".json"
@@ -48,15 +58,38 @@ function App() {
               ref={(refParam) => (inputRef = refParam)}
             />
             <Button
+              mb="2"
               onClick={() => inputRef.click()}
               colorScheme="orange"
               mr="1rem"
             >
               Choose File
             </Button>
-            <Text mr="1rem">
-              {file !== undefined ? file.name : null}
-            </Text>
+            <Text mr="1rem">{file !== undefined ? file.name : null}</Text>
+            <p>or</p>
+            <Textarea
+              value={customReview.content}
+              onChange={(e) =>
+                setCustomReview({ ...customReview, content: e.target.value })
+              }
+              w="50%"
+              mt="2"
+              mb="2"
+            />
+            <Flex alignItems="center">
+              <FormLabel>Rating: </FormLabel>
+              <Input
+                onChange={(e) =>
+                  setCustomReview({ ...customReview, rating: e.target.value })
+                }
+                mb="2"
+                type="number"
+                w="100%"
+                min={1}
+                max={5}
+                value={customReview.rating}
+              />
+            </Flex>
             <Button type="submit">Upload</Button>
           </Flex>
         </FormControl>

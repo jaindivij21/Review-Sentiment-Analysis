@@ -25,8 +25,8 @@ function load_review_controller(req, res) {
 exports.load_review_controller = load_review_controller;
 function get_review_controller(_req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const users = yield prisma.customer.findMany();
-        console.log(toJson(users));
+        const users = yield prisma.customers.findFirst();
+        console.log(users);
         res.json({ message: toJson(users) });
     });
 }
