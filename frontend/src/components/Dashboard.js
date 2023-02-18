@@ -1,35 +1,16 @@
-import { Box, Flex, HStack, Input, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Button, Text } from "@chakra-ui/react";
 import Chart from "./Chart";
 import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
-import { useState } from "react";
 
 function Dashboard() {
-  const [productName, setProductName] = useState();
+  const reviews = ["fdasf", "fdsaf"];
   return (
     <Box>
       <Navbar />
-      <Flex h="100%">
-        {/* <Sidebar /> */}
-        <Box mx="10rem" mt="2rem">
-          <Input
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-            placeholder="product name"
-            w="40%"
-            mb="1rem"
-          />
-          <Text mb="1rem" fontSize="2rem" fontWeight="700">
-            Product Name
-          </Text>
+      <Flex mx="10rem" direction="column" h="100%">
+        <Box mt="2rem">
           <HStack mb="1rem">
-            <Box
-              as="a"
-              href="/reviews"
-              boxShadow="base"
-              p="4"
-              borderRadius="md"
-            >
+            <Box boxShadow="base" p="4" borderRadius="md">
               <Text fontSize="1.5rem" fontWeight="700">
                 Total Reviews
               </Text>
@@ -49,6 +30,24 @@ function Dashboard() {
             </Box>
           </HStack>
           <Chart label="sales" labels={["jan", "feb"]} chartData={[78, 100]} />
+        </Box>
+        <Box mt="3rem" mb="1rem">
+          <Text fontSize="1.5rem" fontWeight="700">
+            Reviews
+          </Text>
+          {reviews.map((review) => (
+            <Flex
+              align="center"
+              boxShadow="md"
+              p="1rem"
+              borderRadius="md"
+              my="1rem"
+              justify="space-between"
+            >
+              {review}
+              <Button ml="1rem">Analyze</Button>
+            </Flex>
+          ))}
         </Box>
       </Flex>
     </Box>
