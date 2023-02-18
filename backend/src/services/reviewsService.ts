@@ -18,7 +18,7 @@ class ReviewsService {
   }
 
   async addReview(input: ReviewInput) {
-    const reviewData = await this.getReviewData(input);
+    const reviewData = await this.mapReviewData(input);
 
     const reviewIds = [];
 
@@ -33,7 +33,7 @@ class ReviewsService {
     return reviewIds;
   }
 
-  private async getReviewData(input: ReviewInput) {
+  private async mapReviewData(input: ReviewInput) {
     const reviewData = await Promise.all(
       input.map(async (review) => {
         const sentiment_id =
