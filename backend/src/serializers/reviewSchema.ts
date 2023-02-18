@@ -18,3 +18,11 @@ export const reviewSchema = {
     sentiments: sentimentSchema,
   },
 };
+
+const groupedReviewSchema = {};
+
+export const reviewsSchema = {
+  title: "Reviews",
+  type: "array",
+  items: groupedReviewSchema,
+};
