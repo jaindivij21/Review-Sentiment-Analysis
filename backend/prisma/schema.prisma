@@ -8,30 +8,30 @@ datasource db {
 }
 
 model entities {
-  id             BigInt         @id @default(autoincrement())
-  score          Decimal        @db.Decimal
-  magnitude      Decimal        @db.Decimal
-  entity         entity_type
-  name           String         @db.VarChar(255)
-  sentiment      sentiment_type
-  sentimental_id BigInt
-  created_at     DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
-  updated_at     DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
-  sentimental    sentimentals   @relation(fields: [sentimental_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id           BigInt         @id @default(autoincrement())
+  score        Decimal        @db.Decimal
+  magnitude    Decimal        @db.Decimal
+  entity       entity_type
+  name         String         @db.VarChar(255)
+  sentiment    sentiment_type
+  sentiment_id BigInt
+  created_at   DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  updated_at   DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  sentiments   sentiments     @relation(fields: [sentiment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model reviews {
-  id             BigInt       @id @default(autoincrement())
-  rating         Decimal      @db.Decimal
-  content        String
-  customer_id    BigInt
-  product_id     BigInt
-  sentimental_id BigInt
-  created_at     DateTime?    @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
-  updated_at     DateTime?    @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
-  customer       customers    @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  product        products     @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  sentimental    sentimentals @relation(fields: [sentimental_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id           BigInt     @id @default(autoincrement())
+  rating       Decimal    @db.Decimal
+  content      String
+  customer_id  BigInt
+  product_id   BigInt
+  sentiment_id BigInt
+  created_at   DateTime?  @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  updated_at   DateTime?  @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
+  customer     customers  @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product      products   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sentiments   sentiments @relation(fields: [sentiment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model customers {
@@ -53,7 +53,7 @@ model products {
   reviews      reviews[]
 }
 
-model sentimentals {
+model sentiments {
   id         BigInt         @id @default(autoincrement())
   score      Decimal        @db.Decimal
   magnitude  Decimal        @db.Decimal
@@ -65,12 +65,19 @@ model sentimentals {
 }
 
 enum entity_type {
-  person
-  location
-  org
-  event
-  consumer_good
-  price
+  PERSON
+  LOCATION
+  ORGANIZATION
+  EVENT
+  WORK_OF_ART
+  CONSUMER_GOOD
+  OTHER
+  PHONE_NUMBER
+  ADDRESS
+  DATE
+  NUMBER
+  PRICE
+  UNKNOWN
 }
 
 enum sentiment_type {
@@ -79,5 +86,5 @@ enum sentiment_type {
   neutral
   mixed
   positive
-  negitive
+  negative
 }

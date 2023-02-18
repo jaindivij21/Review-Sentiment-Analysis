@@ -7,7 +7,7 @@ export interface IReviewSentiment {
   categories: [];
 }
 
-interface IEntitySentiment {
+export interface IEntitySentiment {
   name: string;
   type:
     | "UNKNOWN"

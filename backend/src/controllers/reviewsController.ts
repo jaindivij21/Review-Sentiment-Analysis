@@ -1,19 +1,40 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+// Commands
+import reviewsService from "../services/reviewsService";
 
-export async function load_review_controller(
-  req: Request,
-  res: Response
-) {
+// Action to upload reviews from a file
+export async function post(req: Request, res: Response) {
   const reviews = JSON.parse(req.body.data);
-  res.send({ message: "File uploaded successfully" });
+  if (reviews.length === 0) {
+    res.send({ message: "No reviews to upload" });
+  }
+
+  try {
+    const createdReviews = await reviewsService.addReview(
+      reviews
+    );
+
+    res.send({
+      message:
+        "File uploaded successfully, the reviews have been created!",
+      reviews: createdReviews,
+    });
+  } catch (err) {
+    console.log(err);
+    res.send({ message: "Error uploading reviews" });
+  }
 }
 
-export async function get_review_controller(
-  req: Request,
-  res: Response
-) {
-  res.json({ message: "hello" });
+// Action to get reviews and their sentiments
+// TODO: Add Pagination, Filters, Sorting
+export async function index(req: Request, res: Response) {
+  res.json({
+    message: "Shows All the Reviews (with given ids)",
+  });
+}
+
+export async function show(req: Request, res: Response) {
+  const reviewID = req.params.id;
+  res.json({ message: "Shows one Review" });
 }
