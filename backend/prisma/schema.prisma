@@ -62,6 +62,17 @@ model sentiments {
   updated_at DateTime?      @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamp(6)
   entities   entities[]
   reviews    reviews[]
+  sentences  sentences[]
+}
+
+model sentences {
+  id           BigInt         @id @default(autoincrement())
+  content      String
+  score        Decimal        @db.Decimal
+  magnitude    Decimal        @db.Decimal
+  sentiment_id BigInt?
+  sentiment    sentiment_type
+  sentiments   sentiments?    @relation(fields: [sentiment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum entity_type {

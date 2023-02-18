@@ -41,7 +41,7 @@ interface IMention {
   sentiment: ISentimentScore;
 }
 
-interface ISentenceSentiment {
+export interface ISentenceSentiment {
   text: {
     content: string;
     beginOffset: number;
