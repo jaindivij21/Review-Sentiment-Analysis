@@ -4,9 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const reviews_controller_1 = require("../controllers/reviews_controller");
+const reviewsController_1 = require("../controllers/reviewsController");
 const router = express_1.default.Router();
-router.post("/load_reviews", reviews_controller_1.load_review_controller);
-router.get("/get_reviews", reviews_controller_1.get_review_controller);
+router.post("/upload_reviews", reviewsController_1.post);
+router.get("/get_reviews", reviewsController_1.index);
+router.get("/get_review/:id", reviewsController_1.show);
 exports.default = router;
 //# sourceMappingURL=reviews.js.map
