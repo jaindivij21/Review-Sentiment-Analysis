@@ -5,9 +5,19 @@ export const Navbar = () => {
     <Box p="6" bgColor="orange" as="nav" bg="bg-surface" boxShadow="sm">
       <Box>
         <Flex justify="space-evenly" flex="1">
-          <Text fontSize="3xl" color="white" variant="ghost" fontWeight="600">
+          <Text
+            as="a"
+            href="/"
+            fontSize="3xl"
+            color="white"
+            variant="ghost"
+            fontWeight="600"
+          >
             Thrillo Review Sentimental System
           </Text>
+          <Button as="a" href="/dashboard">
+            Dashboard
+          </Button>
         </Flex>
       </Box>
     </Box>
