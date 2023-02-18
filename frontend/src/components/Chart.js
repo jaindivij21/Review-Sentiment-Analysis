@@ -1,27 +1,48 @@
-import { Box } from "@chakra-ui/react";
-import { Bar } from "react-chartjs-2";
+import { Scatter } from "react-chartjs-2";
 
-import { Chart as ChartJS, CategoryScale } from "chart.js/auto";
+import {
+  Chart as ChartJS,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+} from "chart.js/auto";
 
-ChartJS.register(CategoryScale);
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
-function Chart({ labels, label, chartData }) {
+function Chart({ labels, label, chartData, xTitle, yTitle }) {
+  const options = {
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: yTitle,
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: xTitle,
+        },
+      },
+    },
+  };
+
   const data = {
     labels: labels,
     datasets: [
       {
         label: label,
         data: chartData,
-        backgroundColor: "rgba(75,192,192,0.2)",
-        borderColor: "rgba(75,192,192,1)",
-        borderWidth: 1,
+        backgroundColor: "rgba(255, 99, 132, 1)",
       },
     ],
   };
 
   return (
     <>
-      <Bar data={data} />
+      <Scatter options={options} data={data} />
     </>
   );
 }

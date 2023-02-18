@@ -10,6 +10,7 @@ import {
   Textarea,
   FormLabel,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const URL = "http://localhost:5000/reviews/upload_reviews";
 
@@ -17,8 +18,9 @@ function App() {
   const [file, setFile] = useState();
   const [customReview, setCustomReview] = useState({
     content: "",
-    rating: null,
+    rating: 0,
   });
+  const navigate = useNavigate();
 
   let inputRef;
 
@@ -36,12 +38,20 @@ function App() {
       fileReader.onload = function (event) {
         const jsonData = event.target.result;
         axios.post(URL, { data: jsonData });
+        navigate(`/dashboard`);
       };
 
       fileReader.readAsText(file);
     } else {
-      console.log(customReview);
-      axios.post(URL, { data: [customReview] });
+      const { data } = await axios.post(URL, {
+        data: JSON.stringify([
+          {
+            "Review Content": customReview.content,
+            Rating: customReview.rating,
+          },
+        ]),
+      });
+      navigate(`/review/${data.reviews[0]}`);
     }
   };
 
