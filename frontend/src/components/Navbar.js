@@ -2,7 +2,13 @@ import { Box, Text, Flex, Button } from "@chakra-ui/react";
 
 export const Navbar = () => {
   return (
-    <Box p="6" bgColor="orange" as="nav" bg="bg-surface" boxShadow="sm">
+    <Box
+      p="6"
+      bgColor="orange"
+      as="nav"
+      bg="bg-surface"
+      boxShadow="sm"
+    >
       <Box>
         <Flex justify="space-evenly" flex="1">
           <Text
@@ -13,7 +19,7 @@ export const Navbar = () => {
             variant="ghost"
             fontWeight="600"
           >
-            Thrillo Review Sentimental System
+            Review Sentimental System
           </Text>
           <Button as="a" href="/dashboard">
             Dashboard
