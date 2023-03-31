@@ -21,17 +21,11 @@ export async function post(req: Request, res: Response) {
   }
 
   try {
-    const createdReviews = await reviewsService.addReview(
-      reviews
-    );
+    const createdReviews = await reviewsService.addReview(reviews);
 
     res.send({
-      message:
-        "File uploaded successfully, the reviews have been created!",
-      reviews: objectSerializer(
-        createdReviews,
-        reviewIDSchema
-      ),
+      message: "File uploaded successfully, the reviews have been created!",
+      reviews: objectSerializer(createdReviews, reviewIDSchema),
     });
   } catch (err) {
     console.log(err);

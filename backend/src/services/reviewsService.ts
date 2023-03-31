@@ -43,10 +43,9 @@ class ReviewsService {
   private async mapReviewData(input: ReviewInput) {
     const reviewData = await Promise.all(
       input.map(async (review) => {
-        const sentiment_id =
-          await sentimentalService.createReviewSentimental(
-            review["Review Content"]
-          );
+        const sentiment_id = await sentimentalService.createReviewSentimental(
+          review["Review Content"]
+        );
         return {
           rating: review.Rating,
           content: review["Review Content"],

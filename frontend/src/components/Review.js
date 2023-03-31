@@ -1,4 +1,16 @@
-import { Box, Flex, Heading, HStack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  Heading,
+  HStack,
+  Text,
+  GridItem,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Chart from "./Chart";
@@ -9,6 +21,7 @@ import { firstGraph, secondGraph } from "../utils/graphCalculation";
 function Review() {
   let { id } = useParams();
   const [reviewData, setReviewData] = useState();
+
   const URL = `http://localhost:5000/reviews/get_review/${id}`;
   useEffect(() => {
     axios
@@ -33,6 +46,29 @@ function Review() {
 
   const firstGraphData = firstGraph(reviewData.review.sentiments.entities);
   const secondGraphData = secondGraph(reviewData.review.sentiments.entities);
+
+  const entityList = reviewData.review.sentiments.entities.sort((a, b) => {
+    if (a.score < b.score) return -1;
+    if (a.score > b.score) return 1;
+    return 0;
+  });
+
+  function checkRatingMatch() {
+    const sentiment = reviewData.review.sentiments.sentiment;
+    if (
+      (sentiment === "negative" || sentiment === "clearly_negative") &&
+      reviewData.review.rating >= 3
+    ) {
+      return false;
+    }
+    if (
+      (sentiment === "positive" || sentiment === "clearly_positive") &&
+      reviewData.review.rating < 3
+    ) {
+      return false;
+    }
+    return true;
+  }
 
   return (
     <Box>
@@ -96,6 +132,17 @@ function Review() {
               </Text>
             </Box>
           </HStack>
+          {checkRatingMatch() ? null : (
+            <Alert borderRadius="md" mb="2rem" status="error" mt="1rem">
+              <AlertIcon />
+              <AlertTitle>Rating Mismatch</AlertTitle>
+              <AlertDescription>
+                Perhaps the user has given unintentional rating since rating and
+                our Predicted sentiment doesn't match
+              </AlertDescription>
+            </Alert>
+          )}
+
           <Flex align="center" mb="3rem">
             <Heading fontSize="1.2rem">Legends:</Heading>
             <HStack ml="1rem" mb="2">
@@ -135,6 +182,25 @@ function Review() {
             labels={Object.keys(secondGraphData)}
             chartData={Object.values(secondGraphData)}
           />
+          <Heading>Entities</Heading>
+          <Flex wrap="wrap ">
+            {entityList.map((entity) => (
+              <Box w="200px" m="1rem" boxShadow="md" p="1rem">
+                <Text>
+                  <strong>Name:</strong> {entity.name}
+                </Text>
+                <Text>
+                  <strong>Score:</strong> {entity.score}
+                </Text>
+                <Text>
+                  <strong>Magnitude:</strong> {entity.magnitude}
+                </Text>
+                <Text>
+                  <strong>Type:</strong> {entity.entity}
+                </Text>
+              </Box>
+            ))}
+          </Flex>
         </Box>
       </Flex>
     </Box>
