@@ -15,11 +15,12 @@ Welcome to the fascinating world of Review Sentiment Analysis, where we dive int
    - You can download and install Postgres from [here](https://www.postgresql.org/download/), or use a managed service such as [Heroku Postgres](https://www.heroku.com/postgres).
    - Create a new database and note the connection string, which will be used in the next step.
    - In the project root directory, create a `.env` file and set the `DATABASE_URL` variable to your Postgres connection string. For example: `DATABASE_URL="postgresql://username:password@localhost:5432/reviews"`.
-5. Use Prisma to pull the database schema and generate client code. In your terminal, run the command `npx prisma db pull && npx prisma generate`.
+5. Set up the local development .env and wire up Google Cloud API Key.
+6. Use Prisma to pull the database schema and generate client code. In your terminal, run the command `npx prisma db pull && npx prisma generate`.
    - This command will create a `prisma` folder with the database schema and generated client code.
-6. Start the development server by running the command `npm run watch`.
+7. Start the development server by running the command `npm run watch`.
    - This command will start the server in watch mode, so any changes you make will automatically be reflected in the running application.
-7. Open a new terminal window and run the command `npm run dev`.
+8. Open a new terminal window and run the command `npm run dev`.
    - This command will start the development server and enable the backend API.
 
 ### Frontend Setup
